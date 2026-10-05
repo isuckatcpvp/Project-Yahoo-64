@@ -592,9 +592,16 @@ void render_debug_mode(void) {
  * Renders the amount of coins collected.
  */
 void render_hud_coins(void) {
-    print_text(HUD_COINS_X, HUD_TOP_Y, "$"); // 'Coin' glyph
-    print_text((HUD_COINS_X + 16), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int((HUD_COINS_X + 30), HUD_TOP_Y, "%d", gHudDisplay.coins);
+    s16 x = GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(195); 
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    
+    // Testing '$' to trigger the golden coin texture
+    print_text(x, HUD_TOP_Y - 20, "$"); //'Coin' glyph
+    print_text(x + 16, HUD_TOP_Y - 20, "*"); 
+    print_text_fmt_int(x + 30, HUD_TOP_Y - 20, "%d", gHudDisplay.coins);
+    
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
 /**
@@ -602,12 +609,29 @@ void render_hud_coins(void) {
  * Disables "X" glyph when Mario has 100 stars or more.
  */
 void render_hud_stars(void) {
-    if (gHudFlash == HUD_FLASH_STARS && gGlobalTimer & 0x8) return;
-    s8 showX = (gHudDisplay.stars < 100);
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_TOP_Y, "^"); // 'Star' glyph
-    if (showX) print_text((GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X) + 16), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int((showX * 14) + GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X - 16),
-                       HUD_TOP_Y, "%d", gHudDisplay.stars);
+    s8 showX = 0;
+    s16 x = GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(195); 
+
+    if (gHudFlash == 1 && gGlobalTimer & 8) {
+        return;
+    }
+
+    if (gHudDisplay.stars < 100) {
+        showX = 1;
+    }
+
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    
+    // Testing '^' to trigger the golden star texture
+    print_text(x, HUD_TOP_Y, "^"); //'Star' glyph
+    if (showX == 1) {
+        print_text(x + 16, HUD_TOP_Y, "*"); 
+        print_text_fmt_int(x + 30, HUD_TOP_Y, "%d", gHudDisplay.stars);
+    } else {
+        print_text_fmt_int(x + 16, HUD_TOP_Y, "%d", gHudDisplay.stars);
+    }
+    
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
 }
 
 /**
@@ -718,7 +742,6 @@ void render_hud(void) {
 #endif
     } else {
 #ifdef VERSION_EU
-        // basically create_dl_ortho_matrix but guOrtho screen width is different
         Mtx *mtx = alloc_display_list(sizeof(*mtx));
 
         if (mtx == NULL) {
@@ -744,20 +767,17 @@ void render_hud(void) {
         }
 #endif
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
-            render_hud_coins();
-        }
-
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_STAR_COUNT) {
-            render_hud_stars();
-        }
+        render_hud_coins();
+        render_hud_stars();
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_KEYS) {
             render_hud_keys();
         }
 
 #ifdef BREATH_METER
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) render_hud_breath_meter();
+        if (hudDisplayFlags & HUD_DISPLAY_FLAG_BREATH_METER) {
+            render_hud_breath_meter();
+        }
 #endif
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_CAMERA_AND_POWER) {

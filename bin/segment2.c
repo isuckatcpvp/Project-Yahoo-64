@@ -3616,4 +3616,51 @@ const s16 seg2_painting_mesh_neighbor_tris[] = {
       3, 260, 261, 263,
       3, 240, 242, 244,
       1, 243,
+};      
+
+ALIGNED8 static const u8 areamap_arrow_txt[] = {
+#include "textures/segment2/segment2.14838.ia8.inc.c"
+};
+
+const Gfx areamap_init_project[] = {
+    gsDPPipeSync(),
+    gsSPClearGeometryMode(G_LIGHTING),
+    gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA),
+    gsDPSetRenderMode(G_RM_XLU_SURF, G_RM_XLU_SURF),
+    gsSPPerspNormalize(0xFFFF),
+    gsSPMatrix(&matrix_identity, G_MTX_PROJECTION | G_MTX_LOAD | G_MTX_NOPUSH),
+    gsSPEndDisplayList(),
+};
+
+// 0x020148B0 - 0x020148E0
+const Gfx areamap_init_graphic1[] = {
+    gsSPMatrix(&matrix_identity, G_MTX_MODELVIEW | G_MTX_LOAD | G_MTX_NOPUSH),
+    gsDPTileSync(),
+    gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 16, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD, G_TX_CLAMP, 6, G_TX_NOLOD),
+    gsDPSetTileSize(0, 0, 0, (64 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
+    gsSPEndDisplayList(),
+};
+
+// 0x020148E0 - 0x02014938
+const Gfx areamap_init_graphic2[] = {
+    gsDPPipeSync(),
+    gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA),
+    gsDPTileSync(),
+    gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_8b, 1, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 3, G_TX_NOLOD, G_TX_CLAMP, 3, G_TX_NOLOD),
+    gsDPSetTileSize(0, 0, 0, (8 - 1) << G_TEXTURE_IMAGE_FRAC, (8 - 1) << G_TEXTURE_IMAGE_FRAC),
+    gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_8b, 1, areamap_arrow_txt),
+    gsDPTileSync(),
+    gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_8b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
+    gsDPLoadSync(),
+    gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 8 * 8 - 1, CALC_DXT(8, G_IM_SIZ_8b_BYTES)),
+    gsSPEndDisplayList(),
+};
+
+// 0x02014938 - 0x02014958
+const Gfx areamap_mode_restore[] = {
+    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
+    gsDPPipeSync(),
+    gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
+    gsSPEndDisplayList(),
 };

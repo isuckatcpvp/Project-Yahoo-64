@@ -7,12 +7,12 @@
 // YELLOW
 // 0x030056C0
 static const Vtx coin_seg3_vertex_yellow[] = {
-    {{{   -32,      0,      0}, 0, {   -16,   4080}, {0xff, 0xff, 0x00, 0xff}}},
-    {{{    32,      0,      0}, 0, {  4080,   4080}, {0xff, 0xff, 0x00, 0xff}}},
-    {{{    32,     64,      0}, 0, {  4080,    -16}, {0xff, 0xff, 0x00, 0xff}}},
-    {{{   -32,     64,      0}, 0, {   -16,    -16}, {0xff, 0xff, 0x00, 0xff}}},
+    {{{   -32,      0,      0}, 0, {     0,   1984}, {0xff, 0xdf, 0x00, 0xff}}}, // Top Left - Bright Gold
+    {{{    32,      0,      0}, 0, {  1984,   1984}, {0xff, 0xbf, 0x00, 0xff}}}, // Top Right - Medium Gold
+    {{{    32,     64,      0}, 0, {  1984,      0}, {0xcc, 0x8a, 0x00, 0xff}}}, // Bottom Right - Dark Gold / Shade
+    {{{   -32,     64,      0}, 0, {     0,      0}, {0xff, 0xbf, 0x00, 0xff}}}, // Bottom Left - Medium Gold
 };
-
+    
 // BLUE
 // 0x03005700
 static const Vtx coin_seg3_vertex_blue[] = {
@@ -484,6 +484,7 @@ const Gfx coin_seg3_sub_dl_begin[] = {
     gsSPClearGeometryMode(G_LIGHTING),
     gsDPSetCombineMode(G_CC_MODULATEIA, G_CC_MODULATEIA),
     gsSPTexture(0x8000, 0x8000, 0, G_TX_RENDERTILE, G_ON),
+    gsSPSetGeometryMode(G_TEXTURE_GEN),
 #ifdef IA8_COINS
     gsDPSetTile(G_IM_FMT_IA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_CLAMP, 6, G_TX_NOLOD, G_TX_CLAMP, 6, G_TX_NOLOD),
     gsDPLoadSync(),

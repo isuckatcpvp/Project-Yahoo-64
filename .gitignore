@@ -2148,3 +2148,28 @@ lib/libs2d_engine.a
 # user-specific config file
 include/config/config_local.h
 .DS_Store
+
+# Put this at the absolute end of the file
+!assets/anims/anim_75.inc.c
+!assets/anims/anim_76.inc.c
+!assets/anims/anim_77.inc.c
+
+# ROM and ROM-extracted assets (rebuilt from baserom by make)
+baserom.*.z64
+sound/samples/
+sound/sequences/jp/
+sound/sequences/us/
+textures/segment2_old/
+textures/segment2_older/
+showfloor actors/
+
+# scratch and log files
+theconv.txt
+error*.txt
+errrrror.txt
+actual.txt
+expected.txt
+*.bak
+H'
+Q'
+hLh'
