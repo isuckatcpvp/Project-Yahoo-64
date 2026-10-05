@@ -1,2 +1,2 @@
-# Project-Yahoo-64
-An attempt to recreate the shoshinkai Mario 64 demo.
+# Project Yahoo 64
+### An attempt to recreate the Shoshinkai Mario 64 Demo.
